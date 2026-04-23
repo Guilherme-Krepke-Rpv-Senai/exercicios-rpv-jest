@@ -22,12 +22,18 @@ describe('ProductCard', () => {
   it('renderiza o nome do produto', () => {
     render(<ProductCard product={mockProduct} onAddToCart={jest.fn()} />)
 
+    const element = screen.getByRole('heading', { name: mockProduct.name })
+
+    expect(element).toBeInTheDocument()
     // TODO: escreva a query para encontrar o nome do produto
     // e verifique que ele está na tela
   })
 
   it('renderiza o preço formatado em reais (R$)', () => {
     render(<ProductCard product={mockProduct} onAddToCart={jest.fn()} />)
+
+    const preco = screen.getByText(/R\$\s49,90/)
+    expect(preco).toBeInTheDocument()
 
     // TODO: verifique que o preço aparece no formato "R$\xa049,90"
     // Dica: o produto mockProduct custa R$ 49,90
@@ -36,12 +42,16 @@ describe('ProductCard', () => {
   it('exibe o badge "Esgotado" quando o produto está fora de estoque', () => {
     render(<ProductCard product={mockOutOfStockProduct} onAddToCart={jest.fn()} />)
 
+    const estaesgotado = screen.getByText(/Esgotado/i)
+    expect(estaesgotado).toBeInTheDocument()
+
     // TODO: escreva a query para o badge "Esgotado" e verifique que está na tela
   })
 
   it('não exibe o badge "Esgotado" quando o produto está em estoque', () => {
     render(<ProductCard product={mockProduct} onAddToCart={jest.fn()} />)
 
+    expect(screen.queryByText('Esgotado')).not.toBeInTheDocument()
     // TODO: escreva a assertion *negativa* verificando que "Esgotado" não aparece
     // Dica: use .not. junto com o matcher adequado
   })
