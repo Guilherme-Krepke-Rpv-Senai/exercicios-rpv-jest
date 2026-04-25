@@ -60,12 +60,19 @@ describe('ProductCard', () => {
     const onAddToCart = jest.fn()
     render(<ProductCard product={mockProduct} onAddToCart={onAddToCart} />)
 
+    await userEvent.click(screen.getByRole('button', { name: /adicionar ao carrinho/i }))
+
+    expect(onAddToCart).toHaveBeenCalledWith(mockProduct.id)
+
     // TODO: use userEvent.click() para clicar no botão "Adicionar ao Carrinho"
     // e verifique que onAddToCart foi chamado com o id correto (mockProduct.id)
   })
 
-  it('o botão fica desabilitado quando o produto está fora de estoque', () => {
+  it('o botão fica desabilitado quando o produto está fora de estoque', async () => {
     render(<ProductCard product={mockOutOfStockProduct} onAddToCart={jest.fn()} />)
+
+    await userEvent.click(screen.getByRole('button', { name: /adicionar ao carrinho/i }))
+    expect(screen.getByRole('button', { name: /adicionar ao carrinho/i })).toBeDisabled()
 
     // TODO: encontre o botão "Adicionar ao Carrinho" e verifique que está desabilitado
     // Dica: use getByRole('button', { name: ... }) e o matcher toBeDisabled()
